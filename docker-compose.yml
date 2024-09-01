@@ -1,0 +1,36 @@
+services:
+  traefik:
+    image: traefik:latest
+    command:
+      - "--providers.docker=true"
+      - "--entrypoints.web.address=:80"
+    ports:
+      - "80:80"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+
+  unleash:
+    image: unleashorg/unleash-server:latest
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.unleash.rule=Host(`unleash.127.0.0.1.nip.io`)"
+      - "traefik.http.services.unleash.loadbalancer.server.port=4242"
+    environment:
+      DATABASE_URL: postgres://unleash_user:password@db/unleash
+      DATABASE_SSL: "false"
+      DATABASE_SCHEMA: public
+      LOG_LEVEL: info
+    depends_on:
+      - db
+
+  db:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: unleash_user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: unleash
+    volumes:
+      - unleash_data:/var/lib/postgresql/data
+
+volumes:
+  unleash_data:
