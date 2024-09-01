@@ -45,5 +45,9 @@ setInterval(() => {
   console.log(`${toggleName} enabled for IE: ${isEnabled(toggleName, context2)}`);
   console.log(`${toggleName} enabled for IT: ${isEnabled(toggleName, context3)}`);
   console.log('----------------------------------');
+  const featureFlagsdependOnToggles = client.getFeatureToggleDefinitions().filter(toggle => 
+    isEnabled(toggle.name, context2)
+  );
+  console.log(featureFlagsdependOnToggles);
 }, 1000);
 
