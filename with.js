@@ -18,7 +18,7 @@ client.on('error', console.error);
 client.on('warn', console.log);
 
 
-setInterval(() => {
+setTimeout(() => {
   const context = {
     userId: `${Math.random() * 100}`,
     sessionId: Math.round(Math.random() * 1000),
@@ -46,7 +46,7 @@ setInterval(() => {
   console.log(`${toggleName} enabled for IT: ${isEnabled(toggleName, context3)}`);
   console.log('----------------------------------');
   const featureFlagsdependOnToggles = client.getFeatureToggleDefinitions().filter(toggle => 
-    isEnabled(toggle.name, context2)
+    isEnabled(toggle.name, context3)
   );
   console.log(featureFlagsdependOnToggles);
 }, 1000);
